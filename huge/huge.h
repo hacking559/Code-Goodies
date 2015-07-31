@@ -65,7 +65,7 @@ public:
 		do {
 			v.push_back(n % 10);
 			n /= 10;
-		}while(n);
+		} while(n);
 	}
 
 	void Read(FILE* f) {
@@ -146,60 +146,56 @@ public:
 
 	template<typename T>
 	Huge operator / (T y) {
-
 		T t = 0;
+    		deque <int> aux = v;
 
-    	deque <int> aux = v;
+    		for (register int i = aux.size() - 1; i > -1; -- i) {
+    			aux[i] += t * BASE;
+	    		t = aux[i] % y;
+	    		aux[i] /= y;
+    		}
 
-    	for (register int i = aux.size() - 1; i > -1; -- i) {
-    		aux[i] += t * BASE;
-    		t = aux[i] % y;
-    		aux[i] /= y;
-    	}
-
-    	while (aux.size() > 1 and aux.back() == 0)
-    		aux.pop_back();
-
-    	Huge Ans;
-    	Ans = aux;
-    	return Ans;
+	    	while (aux.size() > 1 and aux.back() == 0)
+	    		aux.pop_back();
+	
+	    	Huge Ans;
+	    	Ans = aux;
+	    	return Ans;
 	}
 
 	template<typename T>
 	void operator /= (T y) {
-
 		T t = 0;
 
-    	for (register int i = v.size() - 1; i > -1; -- i) {
-    		v[i] += t * BASE;
-    		t = v[i] % y;
-    		v[i] /= y;
-    	}
-
-    	while (v.size() > 1 and v.back() == 0)
-    		v.pop_back();
+	    	for (register int i = v.size() - 1; i > -1; -- i) {
+	    		v[i] += t * BASE;
+	    		t = v[i] % y;
+	    		v[i] /= y;
+	    	}
+	
+	    	while (v.size() > 1 and v.back() == 0)
+	    		v.pop_back();
 	}
 
 	// * operator
 	Huge operator * (const Huge& other) {
-
 		int t=0;
-    	deque<int> z;
-    	z.resize (v.size() + other.size() - 1, 0);
+    		deque<int> z;
+    		z.resize (v.size() + other.size() - 1, 0);
 
-    	for(register int i = 0; i < (int)v.size(); ++ i)
+    		for(register int i = 0; i < (int)v.size(); ++ i)
   			for(register int j = 0; j < (int)other.size(); ++ j)
-            	z[i + j] += v[i] * other.v[j];
+            			z[i + j] += v[i] * other.v[j];
 
-    	for(register int i = 0; i < (int)z.size() || t; ++ i) {
-    		if(i == (int)z.size())
-            	z.push_back(0);
-
-            z[i] += t;
-    		t = z[i] / BASE;
-    		z[i] %= BASE;
-
-    	}
+	    	for(register int i = 0; i < (int)z.size() || t; ++ i) {
+	    		if(i == (int)z.size())
+	            		z.push_back(0);
+	
+	            	z[i] += t;
+	    		t = z[i] / BASE;
+	    		z[i] %= BASE;
+	
+	    	}
 
    		Huge ans; ans = z;
    		return ans;
@@ -212,26 +208,25 @@ public:
 	}
 
 	void operator *= (const Huge& other) {
-
 		int t=0;
-    	deque<int> z;
-    	z.resize (v.size() + other.size() - 1, 0);
+    		deque<int> z;
+    		z.resize (v.size() + other.size() - 1, 0);
 
-    	for(int i = 0; i < (int)v.size(); ++ i)
-  			for(int j = 0; j < (int)other.size(); ++ j)
-            	z[i + j] += v[i] * other.v[j];
-
-    	for(int i = 0; i < (int)z.size() || t; ++ i) {
-    		if(i == (int)z.size())
-            	z.push_back(0);
-
-            z[i] += t;
-    		t = z[i] / BASE;
-    		z[i] %= BASE;
-
-    	}
-
-   		v = z;
+	    	for(int i = 0; i < (int)v.size(); ++ i)
+	  		for(int j = 0; j < (int)other.size(); ++ j)
+	            		z[i + j] += v[i] * other.v[j];
+	
+	    	for(int i = 0; i < (int)z.size() || t; ++ i) {
+	    		if(i == (int)z.size())
+	            		z.push_back(0);
+	
+	            	z[i] += t;
+	    		t = z[i] / BASE;
+	    		z[i] %= BASE;
+	
+	    	}
+	
+	   	v = z;
 	}
 
 	template<typename T>
@@ -247,15 +242,15 @@ public:
 		deque <int> aux = v;
 
 		for (register int i = 0; i < aux.size(); ++ i) {
-              aux[i] -= ((i < other.size()) ? other.v[i] : 0) + t;
-              aux[i] += (t = aux[i] < 0) * 10;
-      	}
+              		aux[i] -= ((i < other.size()) ? other.v[i] : 0) + t;
+              		aux[i] += (t = aux[i] < 0) * 10;
+      		}
 
-      for (; aux.size() > 1 and !aux[aux.size() - 1]; aux.pop_back());
+      		for (; aux.size() > 1 and !aux[aux.size() - 1]; aux.pop_back());
 
-      Huge ans;
-  	  ans = aux;
-  	  return ans;
+		 Huge ans;
+	  	 ans = aux;
+	  	 return ans;
 
 	}
 
@@ -268,12 +263,12 @@ public:
 	void operator -= (const Huge& other) {
 		int t = 0;
 
-      for (register int i = 0; i < v.size(); ++ i) {
-              v[i] -= ((i < other.size()) ? other.v[i] : 0) + t;
-              v[i] += (t = v[i] < 0) * 10;
-      	}
+	        for (register int i = 0; i < v.size(); ++ i) {
+	              v[i] -= ((i < other.size()) ? other.v[i] : 0) + t;
+	              v[i] += (t = v[i] < 0) * 10;
+	      	}
 
-      for (; v.size() > 1 and !v[v.size() - 1]; v.pop_back());
+	      	for (; v.size() > 1 and !v[v.size() - 1]; v.pop_back());
 	}
 
 	template<typename T>
@@ -432,7 +427,7 @@ public:
 		do {
 			v.push_back(t % 10);
 			t /= 10;
-		}while(t);
+		} while(t);
 
 	}
 
