@@ -45,7 +45,7 @@ inline bool FInt (double a) {
 class Complex {
     public:
     double Re, Im;
-    Complex() { }
+    Complex() { Re = Im = 0.0; }
     Complex(double a, double b) {
         Re = a, Im = b;
     }
@@ -58,76 +58,64 @@ class Complex {
         Re = a;
     }
 
-    inline Complex operator + (const Complex& other) {
-        Complex Ans = other;
-        Ans.Re += Re;
-        Ans.Im += Im;
-        return Ans;
+    inline Complex operator + (const Complex& other) const {
+        return Complex(this->Re + other.Re, this->Im + other.Im);
     }
     
-    inline Complex operator - (const Complex& other) {
-        Complex Ans = other;
-        Ans.Re -= Re;
-        Ans.Im -= Im;
-        return Ans;
+    inline Complex operator - (const Complex& other) const {
+        return Complex(this->Re - other.Re, this->Im - other.Im);
     }
     
-    inline Complex operator * (const Complex& other) {
-        Complex Ans = other;
-        Ans.Re *= Re;
-        Ans.Im *= Im;
-        return Ans;
+    inline Complex operator * (const Complex& other) const {
+        return Complex(this->Re * other.Re, this->Im * other.Im);
     }
     
-    inline Complex operator / (const Complex& other) {
-        Complex Ans = other;
-        Ans.Re /= Re;
-        Ans.Im /= Im;
-        return Ans;
+    inline Complex operator / (const Complex& other) const {
+        return Complex(this->Re / other.Re, this->Im / other.Im)
     }
     
     inline Complex cabs (Complex nr) {
         return Complex(fabs(Re), fabs(Im));
     }
     
-    inline bool operator == (const Complex& other) {
-        return (Re == other.Re and Im == other.Im);
+    inline bool operator == (const Complex& other) const {
+        return (this->Re == other.Re and this->Im == other.Im);
     }
     
-    inline bool operator < (const Complex& other) {
+    inline bool operator < (const Complex& other) const {
         return (Re == other.Re) ? (Im < other.Im) : (Re < other.Re);
     }
     
-    inline bool operator > (const Complex& other) {
+    inline bool operator > (const Complex& other) const {
         return (Re == other.Re) ? (Im > other.Im) : (Re > other.Re);
     }
     
-    inline bool operator <= (const Complex& other) {
-        if (*this == other)
-            return true;
-        return *this < other;
+    inline bool operator <= (const Complex& other) const {
+        return *this == other || *this < other;
     }
     
-    inline bool operator >= (const Complex& other) {
-        if (*this == other)
-            return true;
-        return *this > other;
+    inline bool operator >= (const Complex& other) const {
+        return *this == other || *this > other;
     }
       
-    inline void operator += (const Complex& other) {
+    inline Complex& operator += (const Complex& other) {
         *this = *this + other;
+        return *this;
     }
     
-    inline void operator -= (const Complex& other) {
+    inline Complex& operator -= (const Complex& other) {
         *this = *this + other;
+        return *this;
     }
     
-    inline void operator *= (const Complex& other) {
+    inline Complex& operator *= (const Complex& other) {
         *this = *this * other;
+        return *this;
     }
     
-    void operator /= (const Complex& other) {
+    inline Complex& operator /= (const Complex& other) {
         *this = *this / other;
+        return *this;
     }
     
     inline bool operator != (const Complex& other) {
@@ -147,7 +135,6 @@ class Complex {
     }
 
     friend istream& operator >> (istream& in, Complex& c);
-
 };
 
 istream& operator >> (istream& in, Complex& c) {
