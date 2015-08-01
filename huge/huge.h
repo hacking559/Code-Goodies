@@ -60,13 +60,7 @@ public:
 
 		template<typename T>
 		Huge& operator = (T n) {
-			v.clear();
-
-			do {
-				v.push_back(n % 10);
-				n /= 10;
-			} while(n);
-
+			*this = Huge(n);
 			return *this;
 		}
 
@@ -90,7 +84,7 @@ public:
 		}
 
 		friend istream& operator >> (istream& in, Huge& a);
-		friend ostream& operator << (ostream& out, Huge& a);
+		friend ostream& operator << (ostream& out, const Huge& a);
 
 		// + Operator
 		Huge operator + (const Huge& other) const {
@@ -120,21 +114,7 @@ public:
 		}
 
 		Huge& operator += (const Huge& other) {
-
-			int t = 0;
-
-			for (register int i = 0; i < v.size() || i < other.size() || t != 0; ++ i) {
-				if (i == v.size())
-					v.push_back(0);
-
-				if (i < other.size())
-					v[i] += other.v[i];
-
-				v[i] += t;
-				t = v[i] / BASE;
-				v[i] %= BASE;
-			}
-
+			*this = *this + other;
 			return *this;
 		}
 
@@ -162,18 +142,7 @@ public:
 
 		template<typename T>
 		Huge& operator /= (T y) {
-
-			T t = 0;
-
-	    	for (register int i = v.size() - 1; i > -1; -- i) {
-	    		v[i] += t * BASE;
-	    		t = v[i] % y;
-	    		v[i] /= y;
-	    	}
-
-	    	while (v.size() > 1 and v.back() == 0)
-	    		v.pop_back();
-
+			*this = *this / y;
 			return *this;
 		}
 
@@ -207,34 +176,13 @@ public:
 		}
 
 		Huge& operator *= (const Huge& other) {
-
-			int t=0;
-	    	deque<int> z;
-	    	z.resize (v.size() + other.size() - 1, 0);
-
-	    	for(register int i = 0; i < (int)v.size(); ++ i)
-	  			for(register int j = 0; j < (int)other.size(); ++ j)
-	            	z[i + j] += v[i] * other.v[j];
-
-	    	for(register int i = 0; i < (int)z.size() || t; ++ i) {
-	    		if(i == (int)z.size())
-	            	z.push_back(0);
-
-	            z[i] += t;
-	    		t = z[i] / BASE;
-	    		z[i] %= BASE;
-
-	    	}
-
-	   		v = z;
+			*this = *this * other;
 			return *this;
 		}
 
 		template<typename T>
 		Huge& operator *= (T other) {
-			Huge x = other;
-			*this *= x;
-			return *this;
+			return *this *= Huge(other);
 		}
 
 		// - operator
@@ -260,15 +208,7 @@ public:
 		}
 
 		Huge& operator -= (const Huge& other) {
-			int t = 0;
-
-	      	for (register int i = 0; i < v.size(); ++ i) {
-	            v[i] -= ((i < other.size()) ? other.v[i] : 0) + t;
-	            v[i] += (t = v[i] < 0) * 10;
-	      	}
-
-	      	for (; v.size() > 1 and !v[v.size() - 1]; v.pop_back());
-
+			*this = *this - other;
 			return *this;
 		}
 
@@ -382,19 +322,12 @@ public:
 		}
 
 		inline bool operator != (Huge other) const {
-
-			Huge aux;
-			aux = v;
-
-			if (aux == other)
-				return false;
-			return true;
+			return !(*this == other);
 		}
 
 		template<typename T>
 		inline bool operator != (T other) const {
-			Huge x = other;
-			return *this != x;
+			return *this != Huge(other);
 		}
 
 		// modulo
@@ -410,19 +343,7 @@ public:
 
 		template<typename INTEGER>
 		Huge& operator %= (INTEGER B) {
-
-			int t = 0;
-
-			for (register int i = v.size() - 1; i >= 0; -- i)
-				t = (t * 10 + v[i]) % B;
-
-			v.clear();
-
-			do {
-				v.push_back(t % 10);
-				t /= 10;
-			} while(t);
-
+			*this = *this % B;
 			return *this;
 		}
 
@@ -444,16 +365,14 @@ public:
 
 		template<typename T>
 		Huge& operator <<= (T x) {
-			while(x --)
-				v.push_front(0);
+			*this = *this << x;
 			return *this;
 		}
 
 		template<typename T>
 		Huge& operator >>= (T x) {
-			while (x --)
-				v.pop_front();
-				return *this;
+			*this = *this >> x;
+			return *this;
 		}
 
 };
@@ -471,7 +390,7 @@ istream& operator >> (istream& in, Huge& a) {
 	return in;
 }
 
-ostream& operator << (ostream& out, Huge& a) {
+ostream& operator << (ostream& out, const Huge& a) {
 	for(register int i = a.v.size() - 1; i > -1; -- i)
 			out << a.v[i];
 	return out;
