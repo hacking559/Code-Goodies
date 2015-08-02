@@ -41,6 +41,10 @@ public:
 			v = x;
 		}
 
+		Huge(const Huge& other) {
+			*this = other;
+		}
+
 		inline int size() const {
 			return v.size();
 		}
@@ -76,10 +80,21 @@ public:
 			return *this;
 		}
 
+		char* c_str() {
+				char *sir;
+				sir = (char *) malloc(MAX_DIGITS);
+
+				int x = 0;
+
+				for(register int i = v.size() - 1; i > -1; -- i)
+						sir[x ++] = v[i] + '0';
+
+				return sir;
+		}
+		
 		Huge& Print (FILE* f) {
 			for (register int i = v.size() - 1; i > -1; -- i)
 					fprintf (f, "%d",v[i]);
-
 			return *this;
 		}
 

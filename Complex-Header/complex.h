@@ -39,8 +39,6 @@ inline bool FInt (double a) {
 
 
 // The numbers are written in the form Re + i * Im, where i * i = ( - 1 ).
-// The defined operators are : + ; - ; * ; / ; < ; <= ; > ; >= .
-// Also += ; -= ; *= ; /= .
 
 class Complex {
     public:
@@ -61,75 +59,75 @@ class Complex {
     inline Complex operator + (const Complex& other) const {
         return Complex(this->Re + other.Re, this->Im + other.Im);
     }
-    
+
     inline Complex operator - (const Complex& other) const {
         return Complex(this->Re - other.Re, this->Im - other.Im);
     }
-    
+
     inline Complex operator * (const Complex& other) const {
         return Complex(this->Re * other.Re, this->Im * other.Im);
     }
-    
+
     inline Complex operator / (const Complex& other) const {
         return Complex(this->Re / other.Re, this->Im / other.Im)
     }
-    
+
     inline Complex cabs (Complex nr) {
         return Complex(fabs(Re), fabs(Im));
     }
-    
+
     inline bool operator == (const Complex& other) const {
         return (this->Re == other.Re and this->Im == other.Im);
     }
-    
+
     inline bool operator < (const Complex& other) const {
         return (Re == other.Re) ? (Im < other.Im) : (Re < other.Re);
     }
-    
+
     inline bool operator > (const Complex& other) const {
         return (Re == other.Re) ? (Im > other.Im) : (Re > other.Re);
     }
-    
+
     inline bool operator <= (const Complex& other) const {
         return *this == other || *this < other;
     }
-    
+
     inline bool operator >= (const Complex& other) const {
         return *this == other || *this > other;
     }
-      
+
     inline Complex& operator += (const Complex& other) {
         *this = *this + other;
         return *this;
     }
-    
+
     inline Complex& operator -= (const Complex& other) {
         *this = *this + other;
         return *this;
     }
-    
+
     inline Complex& operator *= (const Complex& other) {
         *this = *this * other;
         return *this;
     }
-    
+
     inline Complex& operator /= (const Complex& other) {
         *this = *this / other;
         return *this;
     }
-    
+
     inline bool operator != (const Complex& other) {
         return !(*this == other);
     }
-    
+
     inline bool IsReal () {
         return !Im;
     }
-    
+
     inline bool isInt () {
         return (!Im and IsInteger(Re));
     }
-    
+
     inline bool FitsInt () {
         return (!Im and FInt(Re));
     }
@@ -141,4 +139,3 @@ istream& operator >> (istream& in, Complex& c) {
     in >> c.Re >> c.Im;
     return in;
 }
-
