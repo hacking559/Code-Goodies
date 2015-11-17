@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1447702462 source:c:\users\tudor\desktop\huge\main.cpp
+	"huge.h"
+
+1447702547 c:\users\tudor\desktop\huge\huge.h
+	<bits/stdc++.h>
+
